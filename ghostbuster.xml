@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<TriggernometryExport Version="1">
+  <ExportedFolder Id="872d83a3-9fd0-4ec2-91a8-1fc636b880c8" Name="Ghostbuster II (README inside)" Enabled="true">
+    <Folders>
+      <Folder Id="d020b2ec-3ad3-40ef-8ef5-10e4eaaf6538" Name="Backend" Enabled="true">
+        <Folders />
+        <Triggers>
+          <Trigger Enabled="true" Source="FFXIVNetwork" Sequential="True" Name="21 (Network)" Id="c519b762-4de0-4d3c-8123-1c8168f2306b" RegularExpression="\A21\|[^\|]*\|1[^\|]*\|(?&lt;name&gt;[^\|]*)\|(?&lt;actionID&gt;[^\|]*)\|(?&lt;actionName&gt;[^\|]*)\|[^\|]*\|[^\|]*\|[A-F0-9]{0,6}03\|.*\|(?&lt;sequenceNumber&gt;[^\|]*)\|[^\|]*\|[^\|]*\|[^\|]*$" DebugLevel="None">
+            <Actions>
+              <Action OrderNumber="1" VariableOp="SetString" VariableName="${sequenceNumber}" VariableExpression="${actionName}" ActionType="Variable" Asynchronous="False">
+                <Condition Enabled="false" Grouping="Or" />
+              </Action>
+              <Action OrderNumber="2" UseTTSTextExpression="${var:${sequenceNumber}} ghosted" ActionType="UseTTS" ExecutionDelayExpression="2000" Asynchronous="False">
+                <Condition Enabled="true" Grouping="Or">
+                  <ConditionSingle Enabled="true" ExpressionL="${evar:${sequenceNumber}}" ExpressionTypeL="Numeric" ExpressionR="1" ExpressionTypeR="Numeric" ConditionType="NumericEqual" />
+                </Condition>
+              </Action>
+              <Action OrderNumber="3" VariableName="${sequenceNumber}" ActionType="Variable" ExecutionDelayExpression="100" Asynchronous="False">
+                <Condition Enabled="false" Grouping="Or" />
+              </Action>
+            </Actions>
+            <Condition Enabled="true" Grouping="And">
+              <ConditionSingle Enabled="true" ExpressionL="${name}" ExpressionTypeL="String" ExpressionR="${_ffxivplayer}" ExpressionTypeR="String" ConditionType="StringEqualNocase" />
+              <ConditionSingle Enabled="true" ExpressionL="${actionID}" ExpressionTypeL="String" ExpressionR="^(0[78]|108[EF]|1EB[56]|42D2|109[0-8])$" ExpressionTypeR="String" ConditionType="RegexNotMatch" />
+            </Condition>
+          </Trigger>
+          <Trigger Enabled="true" Name="25" Id="29ca2ce5-b7eb-4a2f-bc6b-b75a25cf666b" RegularExpression="\A[^ ]* [^ ]* 25:4[^:]*:[^:]*:(?&lt;sequenceNumber&gt;[^:]*)" DebugLevel="None" Description="Today I learned this line type is bugged in triggernometry for network logs so I can't use that">
+            <Actions>
+              <Action OrderNumber="1" VariableName="${sequenceNumber}" ActionType="Variable" DebugLevel="None">
+                <Condition Enabled="false" Grouping="Or" />
+              </Action>
+            </Actions>
+            <Condition Enabled="false" Grouping="Or" />
+          </Trigger>
+        </Triggers>
+      </Folder>
+    </Folders>
+    <Triggers>
+      <Trigger Enabled="true" Sequential="True" Name="!README in Description tab of this trigger" Id="6c836c03-ccf4-443c-bb6a-21a7dca3ef6e" RegularExpression="\A[^ ]* [^ ]* 00:0038::(!gbon|!gboff)" DebugLevel="None" Description="Ingame commands: &#xD;&#xA;/echo !gbon&#xD;&#xA;/echo !gboff&#xD;&#xA;&#xD;&#xA;This trigger calls out ghosted attacks (i.e. damage actions you casted but that didn't connect due to the target becoming&#xD;&#xA;invulnerable or the damage being 100% overkill due to the enemy dying or being stuck at 1 HP due to mechanics).&#xD;&#xA;&#xD;&#xA;It won't activate in AOE situations (using AOE skills on a single target still works) since in logs it looks like something ghosts&#xD;&#xA;as long as it ghosted on what the game considers to be the primary target of the AOE, even if it did damage elsewhere.&#xD;&#xA;Damage dealing LB3s are also blacklisted due to taking a very long time to apply and I'd like to not have to extend the&#xD;&#xA;timer that long.&#xD;&#xA;&#xD;&#xA;Note that if you're trying this on a dummy, you may be overkilling it pretty frequently resulting in the trigger complaining.">
+        <Actions>
+          <Action OrderNumber="1" FolderId="d020b2ec-3ad3-40ef-8ef5-10e4eaaf6538" TriggerOp="DisableTrigger" ActionType="Folder">
+            <Condition Enabled="true" Grouping="Or">
+              <ConditionSingle Enabled="true" ExpressionL="$1" ExpressionTypeL="String" ExpressionR="!gbon" ExpressionTypeR="String" ConditionType="StringEqualNocase" />
+            </Condition>
+          </Action>
+          <Action OrderNumber="2" FolderOp="DisableFolder" FolderId="d020b2ec-3ad3-40ef-8ef5-10e4eaaf6538" TriggerOp="DisableTrigger" ActionType="Folder">
+            <Condition Enabled="true" Grouping="Or">
+              <ConditionSingle Enabled="true" ExpressionL="$1" ExpressionTypeL="String" ExpressionR="!gboff" ExpressionTypeR="String" ConditionType="StringEqualNocase" />
+            </Condition>
+          </Action>
+        </Actions>
+        <Condition Enabled="false" Grouping="Or" />
+      </Trigger>
+    </Triggers>
+  </ExportedFolder>
+</TriggernometryExport>
